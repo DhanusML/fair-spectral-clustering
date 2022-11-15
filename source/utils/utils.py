@@ -84,3 +84,40 @@ def visualize(n, edges, clusters=[]):
             with_labels=False
         )
     plt.show()
+
+
+def genGroups(n, etas, clusters):
+    """
+    Assigns the groups for nodes in clusters.
+
+    Params:
+        n (int): number of vertices in the graph.
+        etas (list): list of floats. Contains as many entries as
+                     there are groups. ith entry is the fraction
+                     of the ith group in each cluster.
+        clutsters (list): list of list of collection of vertices
+                          forming the clusters.
+
+    Returns:
+        groups (list): list of list of nodes in the same group.
+    """
+    assert sum(etas)==1, "sum of fractions should add up to 1"
+    h = len(etas)
+    groups = [[] for i in range(h)]
+    _eta_cumul = etas.copy()
+
+    for i in range(h-1):
+        _eta_cumul[i+1] = _eta_cumul[i]+etas[i+1]
+
+    for cluster in clusters:
+        c = len(cluster)
+        group = 0
+        for i in range(c):
+            if i < _eta_cumul[group]*c:
+                groups[group].append(cluster[i])
+
+            else:
+                group += 1
+                groups[group].append(cluster[i])
+
+    return groups
