@@ -1,6 +1,6 @@
 import numpy as np
 metadata = np.genfromtxt(
-        "./metadata_2013.txt",
+        "../data/metadata_2013.txt",
         delimiter="\t",
         # skip_header=True,
         # dtype="str",
