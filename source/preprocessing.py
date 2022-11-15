@@ -11,3 +11,11 @@ metadata = np.genfromtxt(
 
 _, relabels = np.unique((metadata[:,0]), return_inverse=True)     
 metadata[:,0] = relabels        #Relabels the IDs in metadata as continous integers between 0 and No_of_Nodes
+
+
+edges = np.genfromtxt(
+        "./Friendship-network_data_2013.csv",
+        delimiter=" ",
+        # skip_header=True,
+        # dtype="str",
+    )
