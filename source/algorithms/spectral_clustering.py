@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.cluster import vq as cl
-from scipy.linalg import null_space
+from scipy.linalg import null_space, sqrtm
 
 
 def kMM(k, pts):
