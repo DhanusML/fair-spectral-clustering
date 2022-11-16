@@ -3,6 +3,9 @@
 import numpy as np
 
 def get_friendshipnet_data():
+    """Returns two parameters,
+        First: N (Number of Nodes in FriendshipNet)
+        Second: list of edges (Nx2 Numpy Matrix)"""
     metadata_orig = np.genfromtxt(
             "./metadata_2013.txt",
             delimiter="\t",
