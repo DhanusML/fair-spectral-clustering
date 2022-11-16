@@ -22,18 +22,32 @@ def get_friendshipnet_data():
             # dtype="str",
         )
 
-    mapping, relabels = np.unique((metadata_orig[:,0]), return_inverse=True)
-    metadata = np.copy(metadata_orig)
-    metadata[:,0] = relabels        #Relabels the data 
+    # mapping, relabels = np.unique((metadata_orig[:,0]), return_inverse=True)
+    # metadata = np.copy(metadata_orig)
+    # metadata[:,0] = relabels        #Relabels the data 
+
+    # edges = np.copy(edges_orig)
+    # for j in np.unique(metadata_orig[:, 0]):
+    #     indices = np.where(edges[:,0] == j)
+    #     edges[indices, 0] = np.where(mapping == j)
+
+    #     indices = np.where(edges[:,1] == j)
+    #     edges[indices, 1] = np.where(mapping == j)
+
+
+    allnodes = np.unique(metadata_orig[:, 0])   #329
+    mapping = np.unique(edges_orig)        #only 134 nodes are interconnected
+
+    orphannodes = np.setdiff1d(allnodes, mapping)   #195
 
     edges = np.copy(edges_orig)
     for j in np.unique(metadata_orig[:, 0]):
         indices = np.where(edges[:,0] == j)
         edges[indices, 0] = np.where(mapping == j)
-
+        
         indices = np.where(edges[:,1] == j)
         edges[indices, 1] = np.where(mapping == j)
 
-    No_of_Users = len(np.unique(metadata[:, 0]))
-    
-    return No_of_Users, edges
+    No_of_Nodes = len(orphannodes) + len(mapping)
+    No_of_connected_nodes = len(mapping)
+    return No_of_Nodes, No_of_connected_nodes, edges, orphannodes
