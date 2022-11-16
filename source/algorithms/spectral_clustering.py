@@ -196,5 +196,3 @@ def normalizedConSC(n, k, edges, groups):
     clusters = kMM(k, H)
 
     return clusters
-
-
