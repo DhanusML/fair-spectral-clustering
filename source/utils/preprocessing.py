@@ -14,7 +14,6 @@ def get_friendshipnet_data():
         )
         # )[:,0]        #For only first column
 
-    No_of_Users = len(np.unique(metadata[:, 0]))
 
     edges_orig = np.genfromtxt(
             "../data/Friendship-network_data_2013.csv",
@@ -34,4 +33,7 @@ def get_friendshipnet_data():
 
         indices = np.where(edges[:,1] == j)
         edges[indices, 1] = np.where(mapping == j)
+
+    No_of_Users = len(np.unique(metadata[:, 0]))
+    
     return No_of_Users, edges
