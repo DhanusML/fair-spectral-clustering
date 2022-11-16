@@ -142,3 +142,59 @@ def unnormalizedConsSC(n, k, edges, groups):
     clusters = kMM(k, H)
 
     return clusters
+
+
+
+def normalizedConSC(n, k, edges, groups):
+    """
+    Performs normalized spectral clustering with population fairness
+    constraint.
+
+    Params:
+        n (int): the number of vertices in the graph.
+        k (int): the number of clusters required.
+        edges (np.ndarray): |E|*2 matrix with each row representing
+                            an edge.
+        groups (list): list of lists. Each list is a collection
+                       of nodes forming a group.
+
+    Returns:
+        clusters (list): list of lists. Each list is the collection
+                         of nodes forming the cluster.
+
+    Warnings:
+        Shows error if there are isolated vertices.
+    """
+    adj_mat = _get_adj_mat(n, edges)
+    lap_mat = _get_lap_mat(adj_mat)
+
+    h = len(groups)
+
+    f_mat = np.zeros((n, h)) # each col represents group
+
+    for i  in range(h):
+        for j in groups[i]:
+            f_mat[j][i] = 1 # jth vertex in ith group
+
+    vs_by_n = np.array(list(map(lambda x: len(x)/n, groups))).reshape((1,h))
+    F = f_mat - vs_by_n
+    F = F[:, :-1] # all except the last column.
+
+    Z = null_space(F.T)
+
+    ## calculations from the paper ##
+    deg_mat = np.diag(np.sum(adj_mat, axis=0))
+    Q2 = Z.T @ (deg_mat @ Z)
+    Q = sqrtm(Q2)
+    Q_inv = np.linalg.inv(Q)
+
+    unorm_lap = Z.T @ (lap_mat @ Z)
+    new_lap_mat = Q_inv @ (unorm_lap @ Q_inv)
+    w, v = np.linalg.eigh(new_lap_mat)
+    X = v[:, :k]
+    H = Z @ (Q_inv @ X)
+    clusters = kMM(k, H)
+
+    return clusters
+
+
