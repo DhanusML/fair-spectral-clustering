@@ -7,7 +7,7 @@ def get_friendshipnet_data():
         First: N (Number of Nodes in FriendshipNet)
         Second: list of edges (Nx2 Numpy Matrix)"""
     metadata_orig = np.genfromtxt(
-            "./metadata_2013.txt",
+            "../data/metadata_2013.txt",
             delimiter="\t",
             # skip_header=True,
             # dtype="str",
@@ -17,7 +17,7 @@ def get_friendshipnet_data():
     No_of_Users = len(np.unique(metadata[:, 0]))
 
     edges_orig = np.genfromtxt(
-            "./Friendship-network_data_2013.csv",
+            "../data/Friendship-network_data_2013.csv",
             delimiter=" ", 
             # skip_header=True,
             # dtype="str",
