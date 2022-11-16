@@ -73,6 +73,7 @@ def visualize(n, edges, clusters=[]):
     vertices = range(n)
     G = nx.Graph()
     G.add_edges_from(edges)
+    G.remove_nodes_from(list(nx.isolates(G)))
     pos=nx.spring_layout(G)
     colors = ['blue', 'red', 'cyan', 'green', 'magenta', 'black']
 
