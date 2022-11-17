@@ -82,7 +82,8 @@ def visualize(n, edges, clusters=[]):
         nx.draw_networkx(
             G, pos=pos, nodelist=c,
             node_color=colors[i],
-            with_labels=False
+            with_labels=True
+            
         )
     plt.show()
 
