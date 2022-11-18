@@ -8,11 +8,14 @@ _, n, edges, _, _, gender_groups  = get_friendshipnet_data()
 
 
 
+
 edges = edges.astype(int)
 
 
 # clusters = normalizedSC(n, 3, edges)
 # clusters = unnormalizedSC(n, 3, edges)
-clusters = normalizedConSC(n, 2, edges, gender_groups)
+
+clusters = unnormalizedConsSC(n, 2, edges, gender_groups)
+# clusters = normalizedConSC(n, 2, edges, gender_groups)
 
 visualize(n, edges, clusters)
