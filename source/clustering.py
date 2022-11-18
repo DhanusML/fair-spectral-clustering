@@ -4,6 +4,8 @@ from utils.utils import *
 import numpy as np
 import matplotlib.pyplot as plt
 import networkx as nx
+
+
 _, n, edges, _, _, gender_groups  = get_friendshipnet_data()
 
 
