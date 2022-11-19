@@ -174,3 +174,12 @@ def get_group_cluster_matrix(clusters, groups):
                 if v in group:
                     mat[i][j] += 1
     return mat
+
+
+def get_balance(mat):
+    max_groups = np.max(mat, axis=1)
+    min_groups = np.min(mat, axis=1)
+    balances = (min_groups/max_groups).reshape(-1)
+
+    return balances.reshape(-1)
+
