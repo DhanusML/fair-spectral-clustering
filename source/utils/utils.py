@@ -82,8 +82,7 @@ def visualize(n, edges, clusters=[]):
         nx.draw_networkx(
             G, pos=pos, nodelist=c,
             node_color=colors[i],
-            with_labels=True
-            
+            with_labels=False
         )
     plt.show()
 
@@ -123,3 +122,63 @@ def genGroups(n, etas, clusters):
                 groups[group].append(cluster[i])
 
     return groups
+
+
+def get_num_cuts(edges, cluster):
+    """
+    Gives the cut of a cluster (no. of edges to be removed for
+    the collection of vertices to become isolated from the rest
+    of the graph.)
+
+    Params:
+        edges (np.ndarray): |E|*2 matrix, each row is an
+                            edge.
+
+    Returns:
+        cuts (int): the number of cuts for the cluster.
+    """
+    cuts = 0
+
+    for edge in edges:
+        a, b = edge[0], edge[1]
+
+        if a in cluster and b not in cluster:
+            cuts += 1
+
+        if a not in cluster and b in cluster:
+            cuts += 1
+
+    return cuts
+
+
+def get_group_cluster_matrix(clusters, groups):
+    """
+    Gives a C*G matrix whose ijth entry is the number of
+    members of group j in the ith cluster.
+
+    Params:
+        clusters (list): List of list of vertices forming clusters.
+        groups (list): List of list of vertices belonging to each
+                       groups.
+
+    Returns:
+        mat (np.ndarray): (no. of clusters)*(no. of groups) matrix
+                          ij th entry is the number of elements
+                          of group j in the ith cluster.
+    """
+    mat = np.zeros((len(clusters), len(groups)), dtype=np.int32)
+
+    for j, group in enumerate(groups):
+        for i, cluster in enumerate(clusters):
+            for v in cluster:
+                if v in group:
+                    mat[i][j] += 1
+    return mat
+
+
+def get_balance(mat):
+    max_groups = np.max(mat, axis=1)
+    min_groups = np.min(mat, axis=1)
+    balances = (min_groups/max_groups).reshape(-1)
+
+    return balances.reshape(-1)
