@@ -12,6 +12,7 @@ if __name__ == "__main__":
         genGraphWithGroups(
             100, cluster_sizes, etas,
             0.9, 0.8, 0.8, 0.1
+            #0.9,0.2,0.8,0.1
         )
     '''
     cluster_sizes = [10, 20, 30, 40]
@@ -50,6 +51,7 @@ if __name__ == "__main__":
 
     misMat_con_u = getMisclassificationMat(clusters_con_u, clusters_original)
     group_cluster_mat_con_u = get_group_cluster_matrix(clusters_con_u, groups)
+    visualizeGroups(clusters_con_u, groups, edges)
 
     ## normalized cons SC ##
     clusters_con = normalizedConSC(100, 4, edges, groups)
