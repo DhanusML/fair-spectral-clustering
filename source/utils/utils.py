@@ -89,6 +89,7 @@ def visualize(n, edges, clusters=[]):
 
 def genGroups(n, etas, clusters):
     """
+    Helper function for genGraphWithGroups
     Assigns the groups for nodes in clusters.
 
     Params:
@@ -177,9 +178,196 @@ def get_group_cluster_matrix(clusters, groups):
 
 
 def get_balance(mat):
+    """
+    Computes balance of each cluster from `group-cluster-matrix'
+
+    Params:
+        mat (np.ndarray): matrix with ijth entry being the number
+                          of elements of group j in cluster i.
+
+    Returns:
+        balance (np.array): array of floats. ith entry is the
+                            balance of the ith cluster.
+    """
+
     max_groups = np.max(mat, axis=1)
     min_groups = np.min(mat, axis=1)
     balances = (min_groups/max_groups).reshape(-1)
 
     return balances.reshape(-1)
 
+
+def visualizeGroups(clusters, groups, edges):
+    """
+    !!!!!!!!!!!!!!!!!!!!!!!!!
+    !!! Needs improvement !!!
+    !!!!!!!!!!!!!!!!!!!!!!!!!
+
+    Visualizes each cluster with different group labelled
+    by different colors.
+
+    Params:
+        clusters (list): List of list of vertices forming clusters.
+        groups (list): list of list of vertices forming groups.
+        edges (np.ndarray): |E|*2 matrix, each row is an edge.
+
+    Returns:
+        None
+    """
+    assert len(groups) < 7, "not enough colors to label with."
+
+    colors = ['green', 'red', 'yellow', 'magenta', 'gray', 'black']
+
+    for i, cluster in enumerate(clusters):
+        new_edges = []
+        for e in edges:
+            if e[0] in cluster and e[1] in cluster:
+                new_edges.append(e)
+        G = nx.Graph()
+
+        for v in cluster:
+            G.add_nodes_from(
+                [[v, {'color':colors[_get_group(v,groups)]}]]
+            )
+        G.add_edges_from(new_edges)
+        c_map = [node[1]['color'] for node in G.nodes(data=True)]
+        plt.figure(i)
+        nx.draw(G, node_color=c_map)
+
+    plt.show()
+
+
+def genGraphWithGroups(n, cluster_sizes, etas, a, b, c, d):
+    """
+    Generate random graph using a variant of SBM.
+    a, b, c, d are probabilities of edges between vertices:
+        a -> same cluster, same group,
+        b -> different cluster, same group,
+        c -> same cluster, different group,
+        d -> different cluster, different group.
+
+    Params:
+        n (int): number of vertices in the graph.
+        cluster_sizes (list): list of integers, each entry represents
+                              sizes of the clusters. Must add up to n
+        etas (list): list of floats, ith entry represents the fraction
+                     of elements of ith group in each cluster.
+        a (float): probability of edge between same cluster, same group.
+        b (float): probability of edge between different cluster, same group.
+        c (float): probability of edge between same cluster, different group.
+        d (float): probability of edge between different cluster, differnt group.
+
+    Returns:
+        edges (np.ndarray): |E|*2 array of np.int32's. Each row represents
+                            an edge in the graph.
+        clusters (list): list of list of vertices forming clusters.
+        groups (list): list of list of vertices forming groups.
+
+    Warnings:
+        Throws error if the elements of cluster_sizes don't add up to n
+        or if sum(etas) is not 1.
+    """
+
+    assert sum(cluster_sizes) == n, \
+        "sum of cluster sizes is not equal to the number of vertices"
+
+    assert sum(etas)==1, "sum of fractions should add up to 1"
+
+    vertices = np.arange(n, dtype=np.int32)
+    clusters = []
+
+    permuted_vertices = np.random.permutation(vertices)
+
+    # get cumulative cluster sizes.
+    l_index = 0
+
+    for i in range(len(cluster_sizes)-1):
+        r_index = l_index + cluster_sizes[i+1]
+        cluster = permuted_vertices[l_index:r_index]
+        clusters.append(cluster)
+        l_index = r_index
+    clusters.append(permuted_vertices[l_index:])
+
+    groups = genGroups(n, etas, clusters)
+
+    edges = []
+
+    # edges with prob a, b, c, d
+    for v1 in vertices:
+        for v2 in vertices:
+            if v1 != v2:
+                for cl in clusters:
+                    if v1 in cl and v2 in cl: # sc
+                        for gr in groups:
+                            if v1 in gr and v2 in gr:
+                                if np.random.random_sample()<a: # sg
+                                    edges.append(
+                                        np.array(
+                                            [v1, v2], dtype=np.int32
+                                        )
+                                    )
+                        else: #sc, not sg
+                            if np.random.random_sample()<c:
+                                edges.append(
+                                    np.array(
+                                        [v1, v2], dtype=np.int32
+                                    )
+                                )
+
+                else: # not sc
+                    for gr in groups:
+                        if v1 in gr and v2 in gr: # sg
+                            if np.random.random_sample()<b:
+                                edges.append(
+                                    np.array(
+                                        [v1, v2], dtype=np.int32
+                                    )
+                                )
+
+                    else: # not sg
+                        if np.random.random_sample()<d:
+                            edges.append(
+                                np.array(
+                                    [v1, v2], dtype=np.int32
+                                )
+                            )
+
+    return np.array(edges), clusters, groups
+
+
+def getMisclassificationMat(clusters1, clusters2):
+    """
+    Takes two clusterings as input and returns a matrix whose
+    ijth entry is the cardinality of symmetric difference of
+    the ith cluster based on the first clustering and the jth
+    cluster based on the second clustering.
+
+    Params:
+        cluster1 (list): list of list of vertices forming cluster1.
+        cluster2 (list): list of list of vertices forming cluster2.
+
+    Returns:
+        mis_mat (np.ndarray): ijth entry is the number of elements
+                              in the symmetric difference of
+                              cluster1[i] and cluster2[j].
+
+    Warnings:
+        Throws an error if the two clusterings have different number
+        of clusters.
+    """
+    assert len(clusters1) == len(clusters2), "number of clusters must be same"
+    num = len(clusters1)
+
+    cs1 = [set(x) for x in clusters1]
+    cs2 = [set(x) for x in clusters2]
+
+    mis_mat = np.zeros((num, num), dtype=np.int32)
+
+    for i in range(num):
+        s1 = cs1[i]
+        for j in range(num):
+            s2 = cs2[j]
+            mis_num = len(s1.symmetric_difference(s2))
+            mis_mat[i][j] = mis_num
+
+    return mis_mat

@@ -39,11 +39,11 @@ def _get_adj_mat(n, edges):
         adj_mat[i,j] = 1
     return adj_mat
 
+
 def _get_lap_mat(adj_mat):
     deg_mat = np.diag(np.sum(adj_mat, axis=0))
     lap_mat = deg_mat - adj_mat
     return lap_mat
-
 
 
 def unnormalizedSC(n, k, edges):
@@ -65,7 +65,7 @@ def unnormalizedSC(n, k, edges):
     lap_mat = _get_lap_mat(adj_mat)
 
     w, v = np.linalg.eigh(lap_mat)
-    vecs = v[:, :k]
+    vecs = v[:, :k+1]
 
     clusters = kMM(k, vecs)
 
@@ -96,7 +96,7 @@ def normalizedSC(n, k, edges):
     deg_inv_half = np.diag(1/np.sqrt(deg_mat))
     norm_lap_mat = deg_inv_half@(lap_mat @ deg_inv_half)
     w, v = np.linalg.eigh(lap_mat)
-    vecs = v[:, :k]
+    vecs = v[:, :k+1]
     clusters = kMM(k, vecs)
 
     return clusters
@@ -137,7 +137,7 @@ def unnormalizedConSC(n, k, edges, groups):
 
     new_lap_mat = Z.T @ (lap_mat @ Z)
     w,v = np.linalg.eigh(new_lap_mat)
-    Y = v[:, :k]
+    Y = v[:, :k+1]
     H = Z @ Y
     clusters = kMM(k, H)
 
@@ -191,7 +191,7 @@ def normalizedConSC(n, k, edges, groups):
     unorm_lap = Z.T @ (lap_mat @ Z)
     new_lap_mat = Q_inv @ (unorm_lap @ Q_inv)
     w, v = np.linalg.eigh(new_lap_mat)
-    X = v[:, :k]
+    X = v[:, :k+1]
     H = Z @ (Q_inv @ X)
     clusters = kMM(k, H)
 
@@ -227,7 +227,7 @@ def _unnormalizedSC(n, k, adj_mat):
     lap_mat = _get_lap_mat(adj_mat)
 
     w, v = np.linalg.eigh(lap_mat)
-    vecs = v[:, :k]
+    vecs = v[:, :k+1]
 
     clusters = kMM(k, vecs)
 
@@ -256,7 +256,7 @@ def _normalizedSC(n, k, adj_mat):
     deg_inv_half = np.diag(1/np.sqrt(deg_mat))
     norm_lap_mat = deg_inv_half@(lap_mat @ deg_inv_half)
     w, v = np.linalg.eigh(lap_mat)
-    vecs = v[:, :k]
+    vecs = v[:, :k+1]
     clusters = kMM(k, vecs)
 
     return clusters
@@ -295,7 +295,7 @@ def _unnormalizedConSC(n, k, adj_mat, groups):
 
     new_lap_mat = Z.T @ (lap_mat @ Z)
     w,v = np.linalg.eigh(new_lap_mat)
-    Y = v[:, :k]
+    Y = v[:, :k+1]
     H = Z @ Y
     clusters = kMM(k, H)
 
@@ -347,7 +347,7 @@ def _normalizedConSC(n, k, adj_mat, groups):
     unorm_lap = Z.T @ (lap_mat @ Z)
     new_lap_mat = Q_inv @ (unorm_lap @ Q_inv)
     w, v = np.linalg.eigh(new_lap_mat)
-    X = v[:, :k]
+    X = v[:, :k+1]
     H = Z @ (Q_inv @ X)
     clusters = kMM(k, H)
 
