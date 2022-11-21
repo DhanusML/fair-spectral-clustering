@@ -189,7 +189,6 @@ def get_balance(mat):
         balance (np.array): array of floats. ith entry is the
                             balance of the ith cluster.
     """
-
     max_groups = np.max(mat, axis=1)
     min_groups = np.min(mat, axis=1)
     balances = (min_groups/max_groups).reshape(-1)
