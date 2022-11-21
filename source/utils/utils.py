@@ -197,6 +197,12 @@ def get_balance(mat):
     return balances.reshape(-1)
 
 
+def _get_group(v, groups):
+    for i, group in enumerate(groups):
+        if v in group:
+            return i
+
+
 def visualizeGroups(clusters, groups, edges):
     """
     !!!!!!!!!!!!!!!!!!!!!!!!!
