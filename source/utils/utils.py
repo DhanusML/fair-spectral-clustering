@@ -202,7 +202,7 @@ def _get_group(v, groups):
             return i
 
 
-def visualizeGroups(clusters, groups, edges):
+def visualizeGroups(clusters, groups, edges, title=''):
     """
     !!!!!!!!!!!!!!!!!!!!!!!!!
     !!! Needs improvement !!!
@@ -221,8 +221,25 @@ def visualizeGroups(clusters, groups, edges):
     """
     assert len(groups) < 7, "not enough colors to label with."
 
-    colors = ['green', 'red', 'yellow', 'magenta', 'gray', 'black']
+    G = nx.Graph()
+    G.add_edges_from(edges)
+    G.remove_nodes_from(list(nx.isolates(G)))
+    pos=nx.spring_layout(G)
+    colors = ['blue', 'red', 'cyan', 'green', 'magenta', 'black']
 
+    plt.figure(0)
+    plt.title("Clustering")
+    for i,c in enumerate(clusters):
+        nx.draw_networkx(
+            G, pos=pos, nodelist=c,
+            node_color=colors[i],
+            with_labels=False
+        )
+
+    plt.figure(1)
+    plt.suptitle("Clusters")
+    colors = ['green', 'red', 'yellow', 'magenta', 'gray', 'black']
+    num_clusters = len(clusters)
     for i, cluster in enumerate(clusters):
         new_edges = []
         for e in edges:
@@ -236,7 +253,7 @@ def visualizeGroups(clusters, groups, edges):
             )
         G.add_edges_from(new_edges)
         c_map = [node[1]['color'] for node in G.nodes(data=True)]
-        plt.figure(i)
+        plt.subplot(1 , num_clusters, i+1)
         nx.draw(G, node_color=c_map)
 
     plt.show()

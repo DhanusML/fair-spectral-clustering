@@ -11,7 +11,7 @@ if __name__ == "__main__":
     edges, clusters_original, groups = \
         genGraphWithGroups(
             100, cluster_sizes, etas,
-            0.9, 0.5, 0.8, 0.1
+            0.9, 0.8, 0.8, 0.1
         )
     '''
     cluster_sizes = [10, 20, 30, 40]
@@ -29,6 +29,7 @@ if __name__ == "__main__":
     misMat_vanilla_u = getMisclassificationMat(clusters_vanilla_u, clusters_original)
     group_cluster_mat_vanilla_u = get_group_cluster_matrix(clusters_vanilla_u,
                                                            groups)
+    visualizeGroups(clusters_vanilla_u, groups, edges)
 
     ## normalized vanilla SC ##
     clusters_vanilla = normalizedSC(100, 4, edges)
