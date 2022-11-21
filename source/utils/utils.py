@@ -202,8 +202,76 @@ def _get_group(v, groups):
             return i
 
 
+def _get_cluster(v, clusters):
+    for i, cluster in enumerate(clusters):
+        if v in cluster:
+            return i
+
+
 def visualizeGroups(clusters, groups, edges, title=''):
     """
+    !!!!!!!!!!!!!!!!!!!!!!!!!
+    !!! Needs improvement !!!
+    !!!!!!!!!!!!!!!!!!!!!!!!!
+
+    Shows two figures:
+        1. Each cluster labelled with different color.
+        2. Within each cluster, each node labelled (with different
+           color) based on the group membership
+
+    Params:
+        clusters (list): List of list of vertices forming clusters.
+        groups (list): list of list of vertices forming groups.
+        edges (np.ndarray): |E|*2 matrix, each row is an edge.
+        title (str): Need to figure out how incorporate this!
+
+    Returns:
+        None
+    """
+    assert len(groups) < 7, "not enough colors to label with."
+
+    G = nx.Graph()
+    G.add_edges_from(edges)
+
+    for i, cluster in enumerate(clusters):
+        for v in cluster:
+            G.add_nodes_from(
+                [[v, {'group': _get_group(v, groups),
+                      'cluster': i}]]
+            )
+
+    colors = ['blue', 'red', 'cyan', 'green', 'magenta', 'black']
+
+    c_map_clusters = [colors[node[1]['cluster']]
+                      for node in G.nodes(data=True)]
+    plt.figure(0)
+    plt.title("Clustering")
+    nx.draw(G, node_color=c_map_clusters)
+
+    plt.figure(1)
+    plt.suptitle("Clusters")
+    pos=nx.spring_layout(G)
+    colors = ['green', 'red', 'yellow', 'magenta', 'gray', 'black']
+    num_clusters = len(clusters)
+
+    for i, c in enumerate(clusters):
+        c_map_groups = [colors[G.nodes[v]['group']]
+                        for v in c]
+        plt.subplot(1 , num_clusters, i+1)
+        nx.draw_networkx(
+            G, pos=pos, nodelist=c,
+            node_color=c_map_groups,
+            with_labels=False
+            # edgelist=[] # not showing the edges
+        )
+
+    plt.show()
+
+
+def visualizeGroups_old(clusters, groups, edges, title=''):
+    """
+    !!!!!!!!!!!!!!!!!!!!!!!!!
+    !!! outdated version !!!!
     !!!!!!!!!!!!!!!!!!!!!!!!!
     !!! Needs improvement !!!
     !!!!!!!!!!!!!!!!!!!!!!!!!
