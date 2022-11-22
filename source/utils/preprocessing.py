@@ -130,6 +130,9 @@ def get_friendshipnet_data():
                 reduced_class_group_list[k].remove(j) 
 
 
+    #make edges symmetric:
+    for i,j in edges:
+        
 
 
     No_of_Nodes = len(orphannodes) + len(mapping)
