@@ -16,7 +16,7 @@ def get_friendshipnet_data():
 
     metadata_orig = np.genfromtxt(
             # "../../data/metadata_2013.txt",
-            "../data/metadata_2013.txt",
+            "../data/friendship_net/metadata_2013.txt",
             delimiter="\t",
             # skip_header=True,
             dtype="str",
@@ -26,7 +26,7 @@ def get_friendshipnet_data():
 
     edges_orig = np.genfromtxt(
             # "../../data/Friendship-network_data_2013.csv",
-            "../data/Friendship-network_data_2013.csv",
+            "../data/friendship_net/Friendship-network_data_2013.csv",
             delimiter=" ", 
             # skip_header=True,
             # dtype="str",
@@ -134,5 +134,20 @@ def get_friendshipnet_data():
 
     No_of_Nodes = len(orphannodes) + len(mapping)
     No_of_connected_nodes = len(mapping)
+
+    edges = edges.astype(np.int32)
+
+    listofedges = edges.tolist()
+    for (index, element) in enumerate(edges[:,0]):
+        j = edges[index,1]
+        for k in range(edges.shape[0]):
+            if all(edges[k]==[j, element]):
+                break
+
+        else:
+            listofedges.append([j, element])
+
+    edges = np.array(listofedges, dtype=np.int32)
+
     return No_of_Nodes, No_of_connected_nodes, edges, orphannodes, gender_group, reduced_gender_group_list, reduced_class_group_list
 
