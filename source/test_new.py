@@ -8,7 +8,7 @@ def get_sizes(clusters):
 
 
 if __name__ == "__main__":
-    cluster_sizes = [10, 10, 10, 10]
+    cluster_sizes = [100, 100, 100, 100]
     etas = [0.25,0.25,0.25,0.25]
     #cluster_sizes = [50, 50]
     #etas = [0.5, 0.5]
@@ -18,7 +18,7 @@ if __name__ == "__main__":
     edges, clusters_original, groups = \
         ut.genGraphWithGroups(
               num_vertices, cluster_sizes, etas,
-              0.9, 0.8, 0.8, 0.1
+              0.7, 0.3, 0.3, 0.1
               #0.9,0.2,0.8,0.1
         )
     '''
@@ -37,7 +37,7 @@ if __name__ == "__main__":
     misMat_vanilla_u = ut.getMisclassificationMat(clusters_vanilla_u, clusters_original)
     group_cluster_mat_vanilla_u = ut.get_group_cluster_matrix(clusters_vanilla_u,
                                                            groups)
-    #ut.visualizeGroups(clusters_vanilla_u, groups, edges)
+    ut.visualizeGroups(clusters_vanilla_u, groups, edges)
 
     ## normalized vanilla SC ##
     clusters_vanilla = al.normalizedSC(num_vertices, num_clusters, edges)
@@ -58,7 +58,7 @@ if __name__ == "__main__":
 
     misMat_con_u = ut.getMisclassificationMat(clusters_con_u, clusters_original)
     group_cluster_mat_con_u = ut.get_group_cluster_matrix(clusters_con_u, groups)
-    #ut.visualizeGroups(clusters_con_u, groups, edges)
+    ut.visualizeGroups(clusters_con_u, groups, edges)
 
     ## normalized cons SC ##
     clusters_con = al.normalizedConSC(num_vertices, num_clusters, edges, groups)
