@@ -32,11 +32,12 @@ def kMM(k, pts):
 
 
 def _get_adj_mat(n, edges):
-    adj_mat = np.zeros((n, n))
+    adj_mat = np.zeros((n, n)) + 0.01
 
     for edge in edges:
         i, j = edge[0], edge[1]
-        adj_mat[i,j] = 1
+        adj_mat[i][j] = 1
+        # adj_mat[j,i] = 1
     return adj_mat
 
 

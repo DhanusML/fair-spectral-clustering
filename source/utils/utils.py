@@ -240,7 +240,8 @@ def visualizeGroups(clusters, groups, edges, title=''):
                       'cluster': i}]]
             )
 
-    colors = ['blue', 'red', 'cyan', 'green', 'magenta', 'black']
+    colors = ['blue', 'red', 'cyan', 'green', 'magenta', 'black', 'grey',
+              'yellow', 'brown']
 
     c_map_clusters = [colors[node[1]['cluster']]
                       for node in G.nodes(data=True)]

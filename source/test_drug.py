@@ -6,17 +6,31 @@ import numpy as np
 def get_sizes(clusters):
     return list(map(lambda x: len(x), clusters))
 
+def getEdges(mat):
+    n = mat.shape[0]
+    edges = []
+    for i in range(n):
+        for j in range(n):
+            if mat[i][j] == 1:
+                edges.append(np.array([i,j], dtype=np.int32))
+
+    return np.array(edges, dtype=np.int32)
+
 
 if __name__=="__main__":
+    '''
     adj_tot, adj_1, adj_2, gender, ethinicity\
         = dr._get_adj_mat_and_groups('../data/drug/')
     #output = dr.get_grouplists_drugnet()
+    '''
+    adj_mat, gender, ethinicity\
+        = dr.__get_adj_mat_and_groups('../data/drug/')
 
 
-    adj_mat = adj_1
+    edges = getEdges(adj_mat)
     groups = gender
 
-    num_clusters = 5
+    num_clusters = 6
     num_nodes = len(adj_mat)
 
     ### vanilla unnormalized clustering ###
@@ -34,7 +48,6 @@ if __name__=="__main__":
     balance_vanilla_u = ut.get_balance(group_cluster_mat_vanilla_u)
 
 
-    '''
     ### vanilla normalized clustering ###
     clusters_vanilla = al._normalizedSC(num_nodes,
                                      num_clusters, adj_mat)
@@ -48,7 +61,6 @@ if __name__=="__main__":
     )
 
     balance_vanilla = ut.get_balance(group_cluster_mat_vanilla)
-    '''
 
 
 
@@ -69,7 +81,6 @@ if __name__=="__main__":
 
 
 
-    '''
     ### constrained normalized clustering ###
     clusters_con = al._normalizedConSC(num_nodes,
                                       num_clusters, adj_mat,
@@ -84,7 +95,6 @@ if __name__=="__main__":
     )
 
     balance_con = ut.get_balance(group_cluster_mat_con)
-    '''
 
     #### printing and visualization ####
     ## vanilla unnormalized ##
@@ -93,9 +103,8 @@ if __name__=="__main__":
     print("cuts: ", cuts_vanilla_u)
     print("group cluster matrix:\n", group_cluster_mat_vanilla_u)
     print("balance:", ut.get_balance(group_cluster_mat_vanilla_u))
-    #ut.visualizeGroups(clusters_vanilla_u, groups, edges)
+    ut.visualizeGroups(clusters_vanilla_u, groups, edges)
 
-    '''
     ## vanilla normalized ##
     print("\nvanilla normalized")
     print("clusters: ", get_sizes(clusters_vanilla))
@@ -103,7 +112,6 @@ if __name__=="__main__":
     print("group cluster matrix:\n", group_cluster_mat_vanilla)
     print("balance:", ut.get_balance(group_cluster_mat_vanilla))
     #ut.visualizeGroups(clusters_vanilla, reduced_group_list, edges)
-    '''
 
 
     ## constrained unnormalized ##
@@ -112,7 +120,7 @@ if __name__=="__main__":
     print("cuts: ", cuts_con_u)
     print("group cluster matrix:\n", group_cluster_mat_con_u)
     print("balance:", ut.get_balance(group_cluster_mat_con_u))
-    #ut.visualizeGroups(clusters_con_u, groups, edges)
+    ut.visualizeGroups(clusters_con_u, groups, edges)
 
     '''
     ## constrained normalized ##

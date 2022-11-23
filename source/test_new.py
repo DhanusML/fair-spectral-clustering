@@ -8,11 +8,16 @@ def get_sizes(clusters):
 
 
 if __name__ == "__main__":
-    cluster_sizes = [25,25,25,25]
-    etas = [0.25,0.25,0.25,0.25]
+    #cluster_sizes = [10, 10, 10, 10]
+    #etas = [0.25,0.25,0.25,0.25]
+    cluster_sizes = [10, 10]
+    etas = [0.5, 0.5]
+    num_vertices = sum(cluster_sizes)
+    num_clusters = len(cluster_sizes)
+
     edges, clusters_original, groups = \
         ut.genGraphWithGroups(
-              100, cluster_sizes, etas,
+              num_vertices, cluster_sizes, etas,
               0.9, 0.8, 0.8, 0.1
               #0.9,0.2,0.8,0.1
         )
@@ -24,7 +29,7 @@ if __name__ == "__main__":
     '''
 
     ## unnormalized vanilla SC ##
-    clusters_vanilla_u = al.unnormalizedSC(100, 4, edges)
+    clusters_vanilla_u = al.unnormalizedSC(num_vertices, num_clusters, edges)
     cuts_vanilla_u = []
     for c in clusters_vanilla_u:
         cuts_vanilla_u.append(ut.get_num_cuts(edges, c))
@@ -35,7 +40,7 @@ if __name__ == "__main__":
     ut.visualizeGroups(clusters_vanilla_u, groups, edges)
 
     ## normalized vanilla SC ##
-    clusters_vanilla = al.normalizedSC(100, 4, edges)
+    clusters_vanilla = al.normalizedSC(num_vertices, num_clusters, edges)
     cuts_vanilla = []
     for c in clusters_vanilla_u:
         cuts_vanilla.append(ut.get_num_cuts(edges, c))
@@ -45,7 +50,7 @@ if __name__ == "__main__":
                                                          groups)
 
     ## unnormalized cons SC ##
-    clusters_con_u = al.unnormalizedConSC(100, 4, edges, groups)
+    clusters_con_u = al.unnormalizedConSC(num_vertices, num_clusters, edges, groups)
     cuts_con_u = []
 
     for c in clusters_con_u:
@@ -56,7 +61,7 @@ if __name__ == "__main__":
     ut.visualizeGroups(clusters_con_u, groups, edges)
 
     ## normalized cons SC ##
-    clusters_con = al.normalizedConSC(100, 4, edges, groups)
+    clusters_con = al.normalizedConSC(num_vertices, num_clusters, edges, groups)
     cuts_con = []
 
     for c in clusters_con:
@@ -66,7 +71,7 @@ if __name__ == "__main__":
     group_cluster_mat_con = ut.get_group_cluster_matrix(clusters_con, groups)
 
 
-    clusters = al.normalizedConSC(100, 4, edges, groups)
+    clusters = al.normalizedConSC(num_vertices, num_clusters, edges, groups)
     cuts = []
 
 
