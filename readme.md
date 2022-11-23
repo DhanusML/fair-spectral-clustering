@@ -22,6 +22,13 @@ every cluster returned by the algorithm.
 
 * [Spectral Clustering with fairness constraints.](https://arxiv.org/abs/1901.08668)
 
+#### Datasets
+* Function for generating synthetic dataset can be found in source/utils/utils.py
+* [FriendshipNet](http://www.sociopatterns.org/datasets/high-school-contact-and-friendship-networks/)
+* [DrugNet](https://sites.google.com/site/ucinetsoftware/datasets/covert-networks/drugnet)
+* [Facebook dataset](https://snap.stanford.edu/data/ego-Facebook.html)
+
+
 
 ### About
 This repository was created as part of E0-259 (Data Analytics) course project by team 22.
