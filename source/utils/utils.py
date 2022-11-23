@@ -1,6 +1,7 @@
 import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
+import itertools
 
 
 def genGraph(n, cluster_sizes, p, q):
@@ -462,3 +463,28 @@ def getMisclassificationMat(clusters1, clusters2):
             mis_mat[i][j] = mis_num
 
     return mis_mat
+
+
+def getMisclassificationError(mat):
+    positions = range(mat.shape[0])
+    total_vertices = np.sum(mat)
+
+    error = 1
+
+    for perm in itertools.permutations(positions):
+        val = 0
+        for i in positions:
+            val += mat[i][perm[i]]
+
+        this_error = val/total_vertices
+
+        if this_error < error:
+            error = this_error
+
+    return error
+
+
+
+
+    pass
+

@@ -8,10 +8,10 @@ def get_sizes(clusters):
 
 
 if __name__ == "__main__":
-    #cluster_sizes = [10, 10, 10, 10]
-    #etas = [0.25,0.25,0.25,0.25]
-    cluster_sizes = [10, 10]
-    etas = [0.5, 0.5]
+    cluster_sizes = [10, 10, 10, 10]
+    etas = [0.25,0.25,0.25,0.25]
+    #cluster_sizes = [50, 50]
+    #etas = [0.5, 0.5]
     num_vertices = sum(cluster_sizes)
     num_clusters = len(cluster_sizes)
 
@@ -37,7 +37,7 @@ if __name__ == "__main__":
     misMat_vanilla_u = ut.getMisclassificationMat(clusters_vanilla_u, clusters_original)
     group_cluster_mat_vanilla_u = ut.get_group_cluster_matrix(clusters_vanilla_u,
                                                            groups)
-    ut.visualizeGroups(clusters_vanilla_u, groups, edges)
+    #ut.visualizeGroups(clusters_vanilla_u, groups, edges)
 
     ## normalized vanilla SC ##
     clusters_vanilla = al.normalizedSC(num_vertices, num_clusters, edges)
@@ -58,7 +58,7 @@ if __name__ == "__main__":
 
     misMat_con_u = ut.getMisclassificationMat(clusters_con_u, clusters_original)
     group_cluster_mat_con_u = ut.get_group_cluster_matrix(clusters_con_u, groups)
-    ut.visualizeGroups(clusters_con_u, groups, edges)
+    #ut.visualizeGroups(clusters_con_u, groups, edges)
 
     ## normalized cons SC ##
     clusters_con = al.normalizedConSC(num_vertices, num_clusters, edges, groups)
@@ -81,6 +81,7 @@ if __name__ == "__main__":
     print("group cluster matrix:\n", group_cluster_mat_vanilla_u)
     print("balance:", ut.get_balance(group_cluster_mat_vanilla_u))
     print("misclassification matrix:\n", misMat_vanilla_u)
+    print("errors", ut.getMisclassificationError(misMat_vanilla_u))
 
     print("\nvanilla normalized")
     print("clusters: ", get_sizes(clusters_vanilla))
@@ -88,6 +89,7 @@ if __name__ == "__main__":
     print("group cluster matrix:\n", group_cluster_mat_vanilla)
     print("balance:", ut.get_balance(group_cluster_mat_vanilla))
     print("misclassification matrix:\n", misMat_vanilla)
+    print("errors", ut.getMisclassificationError(misMat_vanilla))
 
     print("\ncons unnormalized")
     print("clusters: ", get_sizes(clusters_con_u))
@@ -95,6 +97,7 @@ if __name__ == "__main__":
     print("group cluster matrix:\n", group_cluster_mat_con_u)
     print("balance:", ut.get_balance(group_cluster_mat_con_u))
     print("misclassification matrix:\n", misMat_con_u)
+    print("errors", ut.getMisclassificationError(misMat_con_u))
 
     print("\ncons normalized")
     print("clusters: ", get_sizes(clusters_con))
@@ -102,5 +105,6 @@ if __name__ == "__main__":
     print("group cluster matrix:\n", group_cluster_mat_con)
     print("balance:", ut.get_balance(group_cluster_mat_con))
     print("misclassification matrix:\n", misMat_con)
+    print("errors", ut.getMisclassificationError(misMat_con))
 
 # visualize(100, edges, clusters)
