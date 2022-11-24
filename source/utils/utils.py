@@ -251,7 +251,7 @@ def visualizeGroups(clusters, groups, edges, title=''):
     pos=nx.spring_layout(G)
     nx.draw(G, node_color=c_map_clusters, node_size=200, edgelist=[],
             pos=pos)
-    nx.draw_networkx_edges(G, pos=pos, style=':', width=0.1)
+    nx.draw_networkx_edges(G, pos=pos, style=':', width=0.5)
 
     plt.figure(1)
     plt.suptitle("Clusters")

@@ -8,17 +8,17 @@ def get_sizes(clusters):
 
 
 if __name__ == "__main__":
-    cluster_sizes = [100, 100, 100, 100]
-    etas = [0.25,0.25,0.25,0.25]
-    #cluster_sizes = [50, 50]
-    #etas = [0.5, 0.5]
+    #cluster_sizes = [100, 100, 100, 100]
+    #etas = [0.25,0.25,0.25,0.25]
+    cluster_sizes = [10, 10]
+    etas = [0.5, 0.5]
     num_vertices = sum(cluster_sizes)
     num_clusters = len(cluster_sizes)
 
     edges, clusters_original, groups = \
         ut.genGraphWithGroups(
               num_vertices, cluster_sizes, etas,
-              0.7, 0.3, 0.3, 0.1
+              0.9, 0.8, 0.8, 0.1
               #0.9,0.2,0.8,0.1
         )
     '''

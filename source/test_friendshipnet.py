@@ -14,7 +14,7 @@ if __name__=="__main__":
 
     #print(edges)
 
-    num_clusters = 5
+    num_clusters = 15
 
     groups = reduced_group_list
     num_nodes = num_conn_nodes

@@ -28,9 +28,9 @@ if __name__=="__main__":
 
 
     edges = getEdges(adj_mat)
-    groups = gender
+    groups = ethinicity
 
-    num_clusters = 6
+    num_clusters = 15
     num_nodes = len(adj_mat)
 
     ### vanilla unnormalized clustering ###
@@ -81,6 +81,7 @@ if __name__=="__main__":
 
 
 
+    '''
     ### constrained normalized clustering ###
     clusters_con = al._normalizedConSC(num_nodes,
                                       num_clusters, adj_mat,
@@ -95,6 +96,7 @@ if __name__=="__main__":
     )
 
     balance_con = ut.get_balance(group_cluster_mat_con)
+    '''
 
     #### printing and visualization ####
     ## vanilla unnormalized ##
@@ -103,7 +105,7 @@ if __name__=="__main__":
     print("cuts: ", cuts_vanilla_u)
     print("group cluster matrix:\n", group_cluster_mat_vanilla_u)
     print("balance:", ut.get_balance(group_cluster_mat_vanilla_u))
-    ut.visualizeGroups(clusters_vanilla_u, groups, edges)
+    #ut.visualizeGroups(clusters_vanilla_u, groups, edges)
 
     ## vanilla normalized ##
     print("\nvanilla normalized")
@@ -120,7 +122,7 @@ if __name__=="__main__":
     print("cuts: ", cuts_con_u)
     print("group cluster matrix:\n", group_cluster_mat_con_u)
     print("balance:", ut.get_balance(group_cluster_mat_con_u))
-    ut.visualizeGroups(clusters_con_u, groups, edges)
+    #ut.visualizeGroups(clusters_con_u, groups, edges)
 
     '''
     ## constrained normalized ##
