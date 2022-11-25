@@ -19,7 +19,7 @@ def kMM(k, pts):
     """
     clusters = [[] for i in range(k)]
     w_pts = cl.whiten(pts)
-    centroids = cl.kmeans(w_pts, k)[0]
+    centroids = cl.kmeans(w_pts, k, iter=100)[0]
 
     for i, p in enumerate(w_pts):
         dists = []
@@ -32,7 +32,8 @@ def kMM(k, pts):
 
 
 def _get_adj_mat(n, edges):
-    adj_mat = np.zeros((n, n)) + 0.01
+    adj_mat = np.zeros((n, n))
+    adj_mat = (adj_mat + adj_mat.T)/2
 
     for edge in edges:
         i, j = edge[0], edge[1]

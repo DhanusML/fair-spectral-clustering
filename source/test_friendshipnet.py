@@ -14,7 +14,7 @@ if __name__=="__main__":
 
     #print(edges)
 
-    num_clusters = 15
+    num_clusters = 5
 
     groups = reduced_group_list
     num_nodes = num_conn_nodes
@@ -89,7 +89,7 @@ if __name__=="__main__":
     print("cuts: ", cuts_vanilla_u)
     print("group cluster matrix:\n", group_cluster_mat_vanilla_u)
     print("balance:", ut.get_balance(group_cluster_mat_vanilla_u))
-    #ut.visualizeGroups(clusters_vanilla_u, reduced_group_list, edges)
+    ut.visualizeGroups(clusters_vanilla_u, reduced_group_list, edges)
 
     ## vanilla normalized ##
     print("\nvanilla normalized")
@@ -106,7 +106,7 @@ if __name__=="__main__":
     print("cuts: ", cuts_con_u)
     print("group cluster matrix:\n", group_cluster_mat_con_u)
     print("balance:", ut.get_balance(group_cluster_mat_con_u))
-    #ut.visualizeGroups(clusters_con_u, reduced_group_list, edges)
+    ut.visualizeGroups(clusters_con_u, reduced_group_list, edges)
 
     ## constrained normalized ##
     print("\nconstrained normalized")

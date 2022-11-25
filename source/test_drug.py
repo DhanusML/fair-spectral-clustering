@@ -30,7 +30,7 @@ if __name__=="__main__":
     edges = getEdges(adj_mat)
     groups = ethinicity
 
-    num_clusters = 15
+    num_clusters = 7
     num_nodes = len(adj_mat)
 
     ### vanilla unnormalized clustering ###
@@ -105,7 +105,7 @@ if __name__=="__main__":
     print("cuts: ", cuts_vanilla_u)
     print("group cluster matrix:\n", group_cluster_mat_vanilla_u)
     print("balance:", ut.get_balance(group_cluster_mat_vanilla_u))
-    #ut.visualizeGroups(clusters_vanilla_u, groups, edges)
+    ut.visualizeGroups(clusters_vanilla_u, groups, edges)
 
     ## vanilla normalized ##
     print("\nvanilla normalized")
@@ -122,7 +122,7 @@ if __name__=="__main__":
     print("cuts: ", cuts_con_u)
     print("group cluster matrix:\n", group_cluster_mat_con_u)
     print("balance:", ut.get_balance(group_cluster_mat_con_u))
-    #ut.visualizeGroups(clusters_con_u, groups, edges)
+    ut.visualizeGroups(clusters_con_u, groups, edges)
 
     '''
     ## constrained normalized ##
